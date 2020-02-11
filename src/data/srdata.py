@@ -2,6 +2,7 @@ import os
 import glob
 import random
 import pickle
+import fcntl
 
 from data import common
 
@@ -126,9 +127,13 @@ class SRData(data.Dataset):
             lr = imageio.imread(f_lr)
         elif self.args.ext.find('sep') >= 0:
             with open(f_hr, 'rb') as _f:
+                fcntl.flock(_f, fcntl.LOCK_EX)
                 hr = pickle.load(_f)
+                fcntl.flock(_f, fcntl.LOCK_UN)
             with open(f_lr, 'rb') as _f:
+                fcntl.flock(_f, fcntl.LOCK_EX)
                 lr = pickle.load(_f)
+                fcntl.flock(_f, fcntl.LOCK_EX)
 
         return lr, hr, filename
 
