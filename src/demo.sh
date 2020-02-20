@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # EDSR baseline model (x2) + JPEG augmentation
-python main.py --model FEQE --scale 2 --patch_size 96 --save feqe_baseline_x2 --reset
+#python main.py --model FEQE --scale 2 --patch_size 96 --save feqe_baseline_x2 --reset
+python main.py --model FEQE --template GAN --scale 2 --save feqe_gan_baseline_x2 --reset --patch_size 96 --loss 5*VGG54+0.15*GAN
 #python main.py --model EDSR --scale 2 --patch_size 96 --save edsr_baseline_x2 --reset --data_train DIV2K+DIV2K-Q75 --data_test DIV2K+DIV2K-Q75
 
 # EDSR baseline model (x3) - from EDSR baseline model (x2)
