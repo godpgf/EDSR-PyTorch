@@ -47,6 +47,8 @@ parser.add_argument('--no_augment', action='store_true',
 # Model specifications
 parser.add_argument('--model', default='EDSR',
                     help='model name')
+parser.add_argument('--enhance', default=False,
+                    help='is task of image enhance')
 
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
