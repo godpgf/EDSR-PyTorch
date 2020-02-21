@@ -15,6 +15,7 @@ class FEQE(nn.Module):
         n_feats = args.n_feats
         kernel_size = 3
         scale = args.scale[0]
+        compress = args.compress
         act = nn.ReLU(True)
         enhance = args.enhance
         test_only = args.test_only
@@ -23,7 +24,7 @@ class FEQE(nn.Module):
         self.sub_mean = m_sub_mean if enhance or test_only else nn.Sequential(*[m_sub_mean, nn.Upsample(scale_factor=scale, mode='bilinear')])
         self.add_mean = common.MeanShift(args.rgb_range, sign=1)
 
-        m_head = [common.EDownsampler(conv, scale, n_feats)]
+        m_head = [common.EDownsampler(conv, compress, n_feats)]
 
         # define body module
         m_body = [
@@ -34,7 +35,7 @@ class FEQE(nn.Module):
         m_body.append(conv(n_feats, n_feats, kernel_size))
 
         m_tail = [
-            common.EUpsampler(conv, scale, n_feats)
+            common.EUpsampler(conv, compress, n_feats)
         ]
 
         self.head = nn.Sequential(*m_head)
