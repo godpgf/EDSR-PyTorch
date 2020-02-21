@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+# DFEQE
+python main.py --model DFEQE --scale 2 --patch_size 96 --save dfeqe_baseline_x2 --reset
+python main.py --model DFEQE --scale 4 --patch_size 96 --save dfeqe_baseline_x4 --reset --pre_train ../experiment/dfeqe_baseline_x2/model/model_best.pt
+python main.py --model DFEQE --scale 4 --patch_size 96 --save dfeqe_baseline_x4_distilling --reset --distilling --pre_train ../experiment/dfeqe_baseline_x4/model/model_best.pt
+python main.py --model FEQE --scale 4 --n_feats 16 --patch_size 96 --save feqe_baseline_x4 --reset --pre_train ../experiment/dfeqe_baseline_x4_distilling/model/model_latest.pt
+
 # EDSR baseline model (x2) + JPEG augmentation
 #python main.py --model FEQE --scale 2 --patch_size 96 --save feqe_baseline_x2 --reset
 #python main.py --model FEQE --template GAN --scale 2 --save feqe_gan_baseline_x2 --reset --patch_size 96 --loss 5*VGG54+0.15*GAN
@@ -9,7 +16,7 @@
 
 # EDSR baseline model (x4) - from EDSR baseline model (x2)
 #python main.py --model EDSR --scale 4 --save edsr_baseline_x4 --reset --pre_train ../experiment/edsr_baseline_x2/model/model_best.pt
-python main.py --model FEQE --template GAN --scale 4 --save feqe_gan_baseline_x4 --reset --patch_size 96 --loss 5*VGG54+0.15*GAN --pre_train ../experiment/feqe_gan_baseline_x2/model/model_latest.pt
+# python main.py --model FEQE --template GAN --scale 4 --save feqe_gan_baseline_x4 --reset --patch_size 96 --loss 5*VGG54+0.15*GAN --pre_train ../experiment/feqe_gan_baseline_x2/model/model_latest.pt
 
 # EDSR in the paper (x2)
 #python main.py --model EDSR --scale 2 --save edsr_x2 --n_resblocks 32 --n_feats 256 --res_scale 0.1 --reset
