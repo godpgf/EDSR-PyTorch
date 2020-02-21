@@ -35,6 +35,10 @@ class VDSR(nn.Module):
         m_body.append(basic_block(n_feats, args.n_colors, None))
 
         self.body = nn.Sequential(*m_body)
+        self.progress = 0.0
+
+    def distilling(self, progress):
+        self.progress = progress
 
     def forward(self, x):
         x = self.sub_mean(x)

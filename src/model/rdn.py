@@ -89,6 +89,10 @@ class RDN(nn.Module):
             ])
         else:
             raise ValueError("scale must be 2 or 3 or 4.")
+        self.progress = 0.0
+
+    def distilling(self, progress):
+        self.progress = progress
 
     def forward(self, x):
         f__1 = self.SFENet1(x)

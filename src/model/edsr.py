@@ -51,6 +51,10 @@ class EDSR(nn.Module):
         self.head = nn.Sequential(*m_head)
         self.body = nn.Sequential(*m_body)
         self.tail = nn.Sequential(*m_tail)
+        self.progress = 0.0
+
+    def distilling(self, progress):
+        self.progress = progress
 
     def forward(self, x):
         x = self.sub_mean(x)

@@ -20,6 +20,10 @@ class CALayer(nn.Module):
                 nn.Conv2d(channel // reduction, channel, 1, padding=0, bias=True),
                 nn.Sigmoid()
         )
+        self.progress = 0.0
+
+    def distilling(self, progress):
+        self.progress = progress
 
     def forward(self, x):
         y = self.avg_pool(x)

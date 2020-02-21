@@ -49,6 +49,8 @@ parser.add_argument('--model', default='EDSR',
                     help='model name')
 parser.add_argument('--enhance', default=False,
                     help='is task of image enhance')
+parser.add_argument('--distilling', default=False,
+                    help='is distilling model')
 
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function')

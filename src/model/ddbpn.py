@@ -51,6 +51,10 @@ class DenseProjection(nn.Module):
             projection_conv(inter_channels, nr, scale, up),
             nn.PReLU(nr)
         ])
+        self.progress = 0.0
+
+    def distilling(self, progress):
+        self.progress = progress
 
     def forward(self, x):
         if self.bottleneck is not None:

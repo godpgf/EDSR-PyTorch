@@ -34,6 +34,8 @@ class Trainer():
             '[Epoch {}]\tLearning rate: {:.2e}'.format(epoch, Decimal(lr))
         )
         self.loss.start_log()
+        if self.args.distilling:
+            self.model.distilling((epoch - 1.0) / self.args.epochs)
         self.model.train()
 
         timer_data, timer_model = utility.timer(), utility.timer()
