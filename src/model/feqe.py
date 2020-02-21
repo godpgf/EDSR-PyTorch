@@ -17,11 +17,10 @@ class FEQE(nn.Module):
         scale = args.scale[0]
         compress = args.compress
         act = nn.ReLU(True)
-        enhance = args.enhance
         test_only = args.test_only
 
         m_sub_mean = common.MeanShift(args.rgb_range)
-        self.sub_mean = m_sub_mean if enhance or test_only else nn.Sequential(*[m_sub_mean, nn.Upsample(scale_factor=scale, mode='bilinear')])
+        self.sub_mean = m_sub_mean if scale == 1 or test_only else nn.Sequential(*[m_sub_mean, nn.Upsample(scale_factor=scale, mode='bilinear')])
         self.add_mean = common.MeanShift(args.rgb_range, sign=1)
 
         m_head = [common.EDownsampler(conv, compress, n_feats)]
