@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # DFEQE
-python main.py --model DFEQE --scale 2 --compress 2 --patch_size 96 --save dfeqe_baseline_x2 --reset
-python main.py --model DFEQE --scale 2 --compress 4 --patch_size 96 --save dfeqe_baseline_x2_compress --reset --pre_train ../experiment/dfeqe_baseline_x2/model/model_best.pt
-python main.py --model DFEQE --scale 2 --compress 4 --patch_size 96 --save dfeqe_baseline_x2_distilling --reset --distilling --pre_train ../experiment/dfeqe_baseline_x2_compress/model/model_best.pt
+#python main.py --model DFEQE --scale 2 --compress 2 --patch_size 96 --save dfeqe_baseline_x2 --reset
+#python main.py --model DFEQE --scale 2 --compress 4 --patch_size 96 --save dfeqe_baseline_x2_compress --reset --pre_train ../experiment/dfeqe_baseline_x2/model/model_best.pt
+python main.py --model DFEQE --scale 2 --compress 4 --epochs 1200 --patch_size 96 --save dfeqe_baseline_x2_distilling --reset --distilling --pre_train ../experiment/dfeqe_baseline_x2_compress/model/model_best.pt
 python main.py --model FEQE --scale 4 --n_feats 16 --patch_size 96 --save feqe_baseline_x4 --reset --pre_train ../experiment/dfeqe_baseline_x4_distilling/model/model_latest.pt
 
 # EDSR baseline model (x2) + JPEG augmentation

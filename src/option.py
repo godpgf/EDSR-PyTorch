@@ -49,7 +49,7 @@ parser.add_argument('--no_augment', action='store_true',
 # Model specifications
 parser.add_argument('--model', default='EDSR',
                     help='model name')
-parser.add_argument('--distilling', default=False,
+parser.add_argument('--distilling', action='store_true',
                     help='is distilling model')
 
 parser.add_argument('--act', type=str, default='relu',
