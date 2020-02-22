@@ -35,8 +35,7 @@ class Trainer():
         )
         self.loss.start_log()
         if self.args.distilling:
-            print(self.model)
-            self.model.distilling((epoch - 1.0) / self.args.epochs)
+            self.model.model.distilling((epoch - 1.0) / self.args.epochs)
         self.model.train()
 
         timer_data, timer_model = utility.timer(), utility.timer()
