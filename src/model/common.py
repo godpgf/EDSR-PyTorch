@@ -5,10 +5,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-def default_conv(in_channels, out_channels, kernel_size, bias=True):
+def default_conv(in_channels, out_channels, kernel_size, bias=True, groups=1):
     return nn.Conv2d(
         in_channels, out_channels, kernel_size,
-        padding=(kernel_size // 2), bias=bias)
+        padding=(kernel_size // 2), groups=groups, bias=bias)
 
 
 class DepthToSpace(nn.Module):
@@ -120,14 +120,25 @@ class Upsampler(nn.Sequential):
 class EUpsampler(nn.Sequential):
     def __init__(self, conv, scale, n_feats, bias=True):
         m = []
+        # if scale == 2:
+        #     m.append(conv(n_feats, 3 * 4, 1, bias))
+        #     m.append(DepthToSpace(2))
+        # elif scale == 4:
+        #     m.append(conv(n_feats, n_feats * 4, 1, bias))
+        #     m.append(DepthToSpace(2))
+        #     m.append(conv(n_feats, 3 * 4, 1, bias))
+        #     m.append(DepthToSpace(2))
         if scale == 2:
-            m.append(conv(n_feats, 3 * 4, 1, bias))
-            m.append(DepthToSpace(2))
+            m.append(conv(n_feats, 3 * 9, 1, bias))
+            m.append(nn.PixelShuffle(3))
+            m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
         elif scale == 4:
-            m.append(conv(n_feats, n_feats * 4, 1, bias))
-            m.append(DepthToSpace(2))
-            m.append(conv(n_feats, 3 * 4, 1, bias))
-            m.append(DepthToSpace(2))
+            m.append(conv(n_feats, 3 * 9, 1, bias))
+            m.append(nn.PixelShuffle(3))
+            m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
+            m.append(conv(3, 3 * 9, 1, bias))
+            m.append(nn.PixelShuffle(3))
+            m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
         else:
             raise NotImplementedError
         super(EUpsampler, self).__init__(*m)
