@@ -120,25 +120,17 @@ class Upsampler(nn.Sequential):
 class EUpsampler(nn.Sequential):
     def __init__(self, conv, scale, n_feats, bias=True):
         m = []
-        # if scale == 2:
-        #     m.append(conv(n_feats, 3 * 4, 1, bias))
-        #     m.append(DepthToSpace(2))
-        # elif scale == 4:
-        #     m.append(conv(n_feats, n_feats * 4, 1, bias))
-        #     m.append(DepthToSpace(2))
-        #     m.append(conv(n_feats, 3 * 4, 1, bias))
-        #     m.append(DepthToSpace(2))
         if scale == 2:
+            m.append(conv(n_feats, 3 * 4, 1, bias))
+            m.append(DepthToSpace(2))
+        elif scale == 3:
             m.append(conv(n_feats, 3 * 9, 1, bias))
-            m.append(nn.PixelShuffle(3))
-            m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
+            m.append(DepthToSpace(3))
         elif scale == 4:
-            m.append(conv(n_feats, 3 * 9, 1, bias))
-            m.append(nn.PixelShuffle(3))
-            m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
-            m.append(conv(3, 3 * 9, 1, bias))
-            m.append(nn.PixelShuffle(3))
-            m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
+            m.append(conv(n_feats, n_feats * 4, 1, bias))
+            m.append(DepthToSpace(2))
+            m.append(conv(n_feats, 3 * 4, 1, bias))
+            m.append(DepthToSpace(2))
         else:
             raise NotImplementedError
         super(EUpsampler, self).__init__(*m)
@@ -150,6 +142,9 @@ class EDownsampler(nn.Sequential):
         if scale == 2:
             m.append(conv(3, n_feats // 4, 1, bias))
             m.append(SpaceToDepth(2))
+        elif scale == 3:
+            m.append(conv(3, n_feats // 9, 1, bias))
+            m.append(SpaceToDepth(3))
         elif scale == 4:
             m.append(SpaceToDepth(2))
             m.append(conv(3 * 4, n_feats // 4, 1, bias))
