@@ -37,13 +37,15 @@ class FEQE(nn.Module):
             common.EUpsampler(conv, compress, n_feats)
         ]
 
-        self.head = nn.Sequential(*m_head)
+        setattr(self, "head%d" % compress, nn.Sequential(*m_head))
+        self.head = [getattr(self, "head%d" % compress)]
         # self.body = nn.Sequential(*m_body)
         self.body_block_list = []
         for i, block in enumerate(m_body):
             setattr(self, "body.%d" % i, block)
             self.body_block_list.append(getattr(self, "body.%d" % i))
-        self.tail = nn.Sequential(*m_tail)
+        setattr(self, "tail%d" % compress, nn.Sequential(*m_tail))
+        self.tail = [getattr(self, "tail%d" % compress)]
         self.progress = 0.0
 
     def distilling(self, progress):
@@ -52,11 +54,11 @@ class FEQE(nn.Module):
     def forward(self, x):
         x = self.sub_mean(x)
 
-        res = self.head(x)
+        res = self.head[0](x)
         # res = self.body(res)
         for body_block in self.body_block_list:
             res = body_block(res)
-        x = self.tail(res) + x
+        x = self.tail[0](res) + x
 
         x = self.add_mean(x)
 
