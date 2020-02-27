@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # DFEQE
-python main.py --model DFEQE --scale 2 --compress 3 --n_feats 72 --patch_size 96 --save dfeqe_baseline_x2 --reset
+python main.py --model DFEQE --scale 2 --compress 2 --n_feats 72 --patch_size 96 --save dfeqe_baseline_x2 --reset
 python main.py --model DFEQE --scale 2 --compress 3 --n_feats 72 --patch_size 96 --save dfeqe_baseline_x2_compress --reset --pre_train ../experiment/dfeqe_baseline_x2/model/model_best.pt
 python main.py --model DFEQE --scale 2 --compress 3 --n_feats 72 --epochs 1200 --patch_size 96 --save dfeqe_baseline_x2_distilling --reset --distilling --pre_train ../experiment/dfeqe_baseline_x2_compress/model/model_best.pt
 python main.py --model FEQE --scale 2 --compress 3 --n_feats 18 --patch_size 96 --save feqe_baseline_x2 --reset --pre_train ../experiment/dfeqe_baseline_x2_distilling/model/model_latest.pt
