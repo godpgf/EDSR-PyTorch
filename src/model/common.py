@@ -52,7 +52,7 @@ class MeanShift(nn.Conv2d):
 class BasicBlock(nn.Sequential):
     def __init__(
             self, conv, in_channels, out_channels, kernel_size, stride=1, bias=False,
-            bn=True, act=nn.ReLU(True)):
+            bn=True, act=nn.ReLU6(True)):
 
         m = [conv(in_channels, out_channels, kernel_size, bias=bias)]
         if bn:
@@ -66,7 +66,7 @@ class BasicBlock(nn.Sequential):
 class ResBlock(nn.Module):
     def __init__(
             self, conv, n_feats, kernel_size,
-            bias=True, bn=False, act=nn.ReLU(True), res_scale=1):
+            bias=True, bn=False, act=nn.ReLU6(True), res_scale=1):
 
         super(ResBlock, self).__init__()
         m = []
@@ -98,7 +98,7 @@ class Upsampler(nn.Sequential):
                 if bn:
                     m.append(nn.BatchNorm2d(n_feats))
                 if act == 'relu':
-                    m.append(nn.ReLU(True))
+                    m.append(nn.ReLU6(True))
                 elif act == 'prelu':
                     m.append(nn.PReLU(n_feats))
 
@@ -108,7 +108,7 @@ class Upsampler(nn.Sequential):
             if bn:
                 m.append(nn.BatchNorm2d(n_feats))
             if act == 'relu':
-                m.append(nn.ReLU(True))
+                m.append(nn.ReLU6(True))
             elif act == 'prelu':
                 m.append(nn.PReLU(n_feats))
         else:
