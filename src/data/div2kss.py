@@ -7,7 +7,7 @@ import random
 class DIV2KSS(DIV2K):
     def __init__(self, args, name='DIV2KSS', train=True, benchmark=False):
         super(DIV2KSS, self).__init__(args, name.replace("SS", ""), train, benchmark)
-        self.upsample = nn.Upsample(scale_factor=self.scale, mode='bilinear')
+        self.upsample = nn.Upsample(scale_factor=self.scale[0], mode='bilinear')
 
     def __getitem__(self, idx):
         lr, hr, filename = self._load_file(idx)
