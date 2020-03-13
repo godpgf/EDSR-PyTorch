@@ -16,6 +16,6 @@ class DIV2KSS(DIV2K):
         pair_t = common.np2Tensor(*pair, rgb_range=self.args.rgb_range)
 
         if random.randint(0, 1) > 0:
-            return self.upsample(pair_t[0]), pair_t[1], filename
+            return self.upsample(pair_t[0].unsqueeze(0)).squeeze(0), pair_t[1], filename
         else:
             return pair_t[1], pair_t[1], filename
