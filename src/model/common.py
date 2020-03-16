@@ -136,10 +136,10 @@ class EUpsampler(nn.Sequential):
             # m.append(conv(n_feats, 3 * 4, 1, bias))
             # m.append(DepthToSpace(2))
             # 更好的上采样防止棋盘效应
-            m.append(conv(n_feats, 3 * 9, 1, bias))
+            m.append(conv(n_feats, (n_feats // 2) * 9, 1, bias))
             m.append(DepthToSpace(3))
             m.append(nn.Upsample(scale_factor=2.0 / 3.0, mode='bilinear', align_corners=True))
-            m.append(conv(3, 3 * 9, 1, bias))
+            m.append(conv(n_feats // 2, 3 * 9, 1, bias))
             m.append(DepthToSpace(3))
             m.append(nn.Upsample(scale_factor=2.0/3.0, mode='bilinear', align_corners=True))
         else:
