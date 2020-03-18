@@ -102,7 +102,7 @@ class DFEQE(nn.Module):
             tmp_body_x4_x2.append(cur_body)
 
         tmp_body_x2_x1 = []
-        for i in range(n_resblocks + 1, -1, -1):
+        for i in range(n_resblocks, -1, -1):
             cur_body = body_x2_block_list[0: i] + [body_x2_x1_list[i]]
             tmp_body_x2_x1.append(cur_body)
 
