@@ -97,7 +97,7 @@ class DFEQE(nn.Module):
             body_x2_x1_list.append(getattr(self, "body_x2_x1.%d" % i))
 
         tmp_body_x4_x2 = []
-        for i in range(n_resblocks + 1, -1, -1):
+        for i in range(n_resblocks, -1, -1):
             cur_body = body_x4_block_list[0: i] + [body_x4_x2_list[i]]
             tmp_body_x4_x2.append(cur_body)
 
