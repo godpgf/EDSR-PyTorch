@@ -98,12 +98,12 @@ class DFEQE(nn.Module):
 
         tmp_body_x4_x2 = []
         for i in range(n_resblocks, -1, -1):
-            cur_body = body_x4_block_list[0: i] + [body_x4_x2_list[i]]
+            cur_body = body_x4_block_list[0: i] + [body_x4_x2_list[i]] + body_x2_block_list[i: n_resblocks]
             tmp_body_x4_x2.append(cur_body)
 
         tmp_body_x2_x1 = []
         for i in range(n_resblocks, -1, -1):
-            cur_body = body_x2_block_list[0: i] + [body_x2_x1_list[i]]
+            cur_body = body_x2_block_list[0: i] + [body_x2_x1_list[i]] + body_block_list[i :n_resblocks]
             tmp_body_x2_x1.append(cur_body)
 
         self.head_list = head_x4 + head_x4 * (n_resblocks + 1) + head_x2 * (n_resblocks + 1) + head
