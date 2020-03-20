@@ -10,6 +10,7 @@ import imageio
 import torch
 import torch.utils.data as data
 
+
 class SRData(data.Dataset):
     def __init__(self, args, name='', train=True, benchmark=False):
         self.args = args
@@ -21,7 +22,7 @@ class SRData(data.Dataset):
         self.input_large = (args.model == 'VDSR')
         self.scale = args.scale
         self.idx_scale = 0
-        
+
         self._set_filesystem(args.dir_data)
         if args.ext.find('img') < 0:
             path_bin = os.path.join(self.apath, 'bin')
@@ -43,19 +44,19 @@ class SRData(data.Dataset):
                     ),
                     exist_ok=True
                 )
-            
+
             self.images_hr, self.images_lr = [], [[] for _ in self.scale]
             for h in list_hr:
                 b = h.replace(self.apath, path_bin)
                 b = b.replace(self.ext[0], '.pt')
                 self.images_hr.append(b)
-                self._check_and_load(args.ext, h, b, verbose=True) 
+                self._check_and_load(args.ext, h, b, verbose=True)
             for i, ll in enumerate(list_lr):
                 for l in ll:
                     b = l.replace(self.apath, path_bin)
                     b = b.replace(self.ext[1], '.pt')
                     self.images_lr[i].append(b)
-                    self._check_and_load(args.ext, l, b, verbose=True) 
+                    self._check_and_load(args.ext, l, b, verbose=True)
         if train:
             n_patches = args.batch_size * args.test_every
             n_images = len(args.data_train) * len(self.images_hr)
@@ -99,6 +100,7 @@ class SRData(data.Dataset):
         lr, hr, filename = self._load_file(idx)
         pair = self.get_patch(lr, hr)
         pair = common.set_channel(*pair, n_channels=self.args.n_colors)
+        pair = common.add_noise(*pair, noise_type=self.args.noise_type, noise_param=self.args.noise_param)
         pair_t = common.np2Tensor(*pair, rgb_range=self.args.rgb_range)
 
         return pair_t[0], pair_t[1], filename
@@ -154,4 +156,3 @@ class SRData(data.Dataset):
             self.idx_scale = idx_scale
         else:
             self.idx_scale = random.randint(0, len(self.scale) - 1)
-

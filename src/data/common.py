@@ -5,6 +5,7 @@ import skimage.color as sc
 
 import torch
 
+
 def get_patch(*args, patch_size=96, scale=2, multi=False, input_large=False):
     ih, iw = args[0].shape[:2]
 
@@ -31,6 +32,28 @@ def get_patch(*args, patch_size=96, scale=2, multi=False, input_large=False):
 
     return ret
 
+
+def add_noise(*args, noise_type, noise_param):
+    def _add_noise(img):
+        if noise_type == 'none':
+            return img
+        elif noise_type == 'poisson':
+            noise = np.random.poisson(img)
+            noise_img = img + noise
+            noise_img = 255 * (noise_img / np.amax(noise_img))
+        else:
+            h, w, c = img.shape
+            std = np.random.uniform(0, noise_param)
+            noise = np.random.normal(0, std, (h, w, c))
+
+            # Add noise and clip
+            noise_img = np.array(img) + noise
+
+        noise_img = np.clip(noise_img, 0, 255)
+        return noise_img
+
+    return [_add_noise(a) for a in args]
+
 def set_channel(*args, n_channels=3):
     def _set_channel(img):
         if img.ndim == 2:
@@ -46,6 +69,7 @@ def set_channel(*args, n_channels=3):
 
     return [_set_channel(a) for a in args]
 
+
 def np2Tensor(*args, rgb_range=255):
     def _np2Tensor(img):
         np_transpose = np.ascontiguousarray(img.transpose((2, 0, 1)))
@@ -56,6 +80,7 @@ def np2Tensor(*args, rgb_range=255):
 
     return [_np2Tensor(a) for a in args]
 
+
 def augment(*args, hflip=True, rot=True):
     hflip = hflip and random.random() < 0.5
     vflip = rot and random.random() < 0.5
@@ -65,8 +90,7 @@ def augment(*args, hflip=True, rot=True):
         if hflip: img = img[:, ::-1, :]
         if vflip: img = img[::-1, :, :]
         if rot90: img = img.transpose(1, 0, 2)
-        
+
         return img
 
     return [_augment(a) for a in args]
-
