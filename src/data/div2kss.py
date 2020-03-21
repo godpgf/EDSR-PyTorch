@@ -13,6 +13,7 @@ class DIV2KSS(DIV2K):
         lr, hr, filename = self._load_file(idx)
         pair = self.get_patch(lr, hr)
         pair = common.set_channel(*pair, n_channels=self.args.n_colors)
+        pair = common.add_noise(*pair, noise_type=self.args.noise_type, noise_param=self.args.noise_param)
         pair_t = common.np2Tensor(*pair, rgb_range=self.args.rgb_range)
 
         return self.upsample(pair_t[0].unsqueeze(0)).squeeze(0), pair_t[1], filename
