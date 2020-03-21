@@ -49,7 +49,7 @@ parser.add_argument('--no_augment', action='store_true',
 # Noise specifications
 parser.add_argument('-n', '--noise-type', help='noise type',
                     choices=['none', 'gaussian', 'poisson'], default='none', type=str)
-parser.add_argument('-p', '--noise-param', help='noise parameter (e.g. std for gaussian)', default=50, type=float)
+parser.add_argument('-p', '--noise-param', help='noise parameter (e.g. std for gaussian)', default=20, type=float)
 
 # Model specifications
 parser.add_argument('--model', default='EDSR',
