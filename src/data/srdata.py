@@ -100,7 +100,6 @@ class SRData(data.Dataset):
         lr, hr, filename = self._load_file(idx)
         pair = self.get_patch(lr, hr)
         pair = common.set_channel(*pair, n_channels=self.args.n_colors)
-        pair = common.add_noise(*pair, noise_type=self.args.noise_type, noise_param=self.args.noise_param)
         pair_t = common.np2Tensor(*pair, rgb_range=self.args.rgb_range)
 
         return pair_t[0], pair_t[1], filename
