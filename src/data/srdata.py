@@ -56,7 +56,7 @@ class SRData(data.Dataset):
                     b = l.replace(self.apath, path_bin)
                     b = b.replace(self.ext[1], '.pt')
                     self.images_lr[i].append(b)
-                    self._check_and_load(args.ext, l, b, verbose=True)
+                    self._check_and_load(args.ext, l, b, verbose=True, scale=int(self.scale[i]))
         if train:
             n_patches = args.batch_size * args.test_every
             n_images = len(args.data_train) * len(self.images_hr)
@@ -89,7 +89,7 @@ class SRData(data.Dataset):
         if self.input_large: self.dir_lr += 'L'
         self.ext = ('.png', '.png')
 
-    def _check_and_load(self, ext, img, f, verbose=True):
+    def _check_and_load(self, ext, img, f, verbose=True, scale=1):
         if not os.path.isfile(f) or ext.find('reset') >= 0:
             if verbose:
                 print('Making a binary: {}'.format(f))

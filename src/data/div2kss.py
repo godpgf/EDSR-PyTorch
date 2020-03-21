@@ -10,15 +10,15 @@ class DIV2KSS(DIV2K):
     def __init__(self, args, name='DIV2KSS', train=True, benchmark=False):
         super(DIV2KSS, self).__init__(args, name.replace("SS", ""), train, benchmark)
 
-    def _check_and_load(self, ext, img, f, verbose=True):
+    def _check_and_load(self, ext, img, f, verbose=True, scale=1):
         if not os.path.isfile(f) or ext.find('reset') >= 0:
             if verbose:
                 print('Making a binary: {}'.format(f))
             with open(f, 'wb') as _f:
                 img = imageio.imread(img)
-                if "train_LR" in f:
+                if scale != 1:
                     x, y = img.shape[0:2]
-                    pickle.dump(cv2.resize(img, (y * int(self.args.scale), x * int(self.args.scale)), interpolation=cv2.INTER_LINEAR), _f)
+                    pickle.dump(cv2.resize(img, (y * scale, x * scale), interpolation=cv2.INTER_LINEAR), _f)
                 else:
                     pickle.dump(img, _f)
 
