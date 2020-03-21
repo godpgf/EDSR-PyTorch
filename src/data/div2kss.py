@@ -22,6 +22,22 @@ class DIV2KSS(DIV2K):
                 pickle.dump(img, _f)
                 print(img.shape)
 
+    def get_patch(self, lr, hr):
+        if self.train:
+            lr, hr = common.get_patch(
+                lr, hr,
+                patch_size=self.args.patch_size,
+                scale=1,
+                multi=(len(self.scale) > 1),
+                input_large=self.input_large
+            )
+            if not self.args.no_augment: lr, hr = common.augment(lr, hr)
+        else:
+            ih, iw = lr.shape[:2]
+            hr = hr[0:ih, 0:iw]
+
+        return lr, hr
+
     def __getitem__(self, idx):
         lr, hr, filename = self._load_file(idx)
         pair = self.get_patch(lr, hr)
