@@ -18,9 +18,9 @@ class DIV2KSS(DIV2K):
                 img = imageio.imread(img)
                 if scale != 1:
                     x, y = img.shape[0:2]
-                    pickle.dump(cv2.resize(img, (y * scale, x * scale), interpolation=cv2.INTER_LINEAR), _f)
-                else:
-                    pickle.dump(img, _f)
+                    img = cv2.resize(img, (y * scale, x * scale), interpolation=cv2.INTER_LINEAR)
+                pickle.dump(img, _f)
+                print(img.shape)
 
     def __getitem__(self, idx):
         lr, hr, filename = self._load_file(idx)
