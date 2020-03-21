@@ -29,5 +29,5 @@ class DIV2KSS(DIV2K):
         pair = common.add_noise(*pair, noise_type=self.args.noise_type, noise_param=self.args.noise_param)
         pair_t = common.np2Tensor(*pair, rgb_range=self.args.rgb_range)
 
-        return self.pair_t[0], pair_t[1], filename
+        return pair_t[0], pair_t[1], filename
 
