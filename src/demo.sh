@@ -6,7 +6,7 @@ python main.py --model DFEQE --scale 2 --compress 4 --n_feats 64 --patch_size 96
 python main.py --model DFEQE --scale 2 --compress 4 --n_feats 64 --epochs 1200 --patch_size 96 --save dfeqe_baseline_x2_distilling --reset --distilling --pre_train ../experiment/dfeqe_baseline_x2_compress/model/model_best.pt
 #python main.py --model FEQE --scale 2 --compress 4 --n_feats 16 --epochs 100 --patch_size 96 --save feqe_baseline_x2 --reset --pre_train ../experiment/dfeqe_baseline_x2_distilling/model/model_latest.pt
 python main.py --model FEQE --noise-type gaussian --noise-param 16 --data_train REALSR --data_test REALSR --scale 2 --compress 4 --n_feats 16 --epochs 300 --patch_size 96 --save feqe_baseline_x2_denoise --reset --pre_train ../experiment/dfeqe_baseline_x2_distilling/model/model_latest.pt
-python main.py --model FEQE --data_test Demo --scale 2 --compress 4 --n_feats 16 --pre_train ../experiment/feqe_baseline_x2/model/model_latest.pt --test_only --save_results
+python main.py --model FEQE --data_test Demo --scale 2 --compress 4 --n_feats 16 --pre_train ../experiment/feqe_baseline_x2_denoise/model/model_latest.pt --test_only --save_results
 
 # EDSR baseline model (x2) + JPEG augmentation
 #python main.py --model FEQE --scale 2 --patch_size 96 --save feqe_baseline_x2 --reset
