@@ -1,5 +1,6 @@
 import os
 from data import srdata
+from data import common
 
 
 class REALSR(srdata.SRData):
@@ -31,3 +32,28 @@ class REALSR(srdata.SRData):
         self.dir_lr = os.path.join(self.apath, 'LR')
         if self.input_large:
             self.dir_lr += 'L'
+
+    def get_patch(self, lr, hr):
+        if self.train:
+            lr, hr = common.get_patch(
+                lr, hr,
+                patch_size=self.args.patch_size,
+                scale=1,
+                multi=(len(self.scale) > 1),
+                input_large=self.input_large
+            )
+            if not self.args.no_augment: lr, hr = common.augment(lr, hr)
+        else:
+            ih, iw = lr.shape[:2]
+            hr = hr[0:ih, 0:iw]
+
+        return lr, hr
+
+    def __getitem__(self, idx):
+        lr, hr, filename = self._load_file(idx)
+        pair = self.get_patch(lr, hr)
+        pair = common.set_channel(*pair, n_channels=self.args.n_colors)
+        pair = common.add_noise(*pair, noise_type=self.args.noise_type, noise_param=self.args.noise_param)
+        pair_t = common.np2Tensor(*pair, rgb_range=self.args.rgb_range)
+
+        return pair_t[0], pair_t[1], filename
