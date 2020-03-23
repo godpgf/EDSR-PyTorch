@@ -23,11 +23,11 @@ parser.add_argument('--dir_data', type=str, default='../../dataset',
                     help='dataset directory')
 parser.add_argument('--dir_demo', type=str, default='../test',
                     help='demo image directory')
-parser.add_argument('--data_train', type=str, default='DIV2KSS',
+parser.add_argument('--data_train', type=str, default='REALSR',
                     help='train dataset name')
-parser.add_argument('--data_test', type=str, default='DIV2KSS',
+parser.add_argument('--data_test', type=str, default='REALSR',
                     help='test dataset name')
-parser.add_argument('--data_range', type=str, default='1-800/801-810',
+parser.add_argument('--data_range', type=str, default='1-500/501-506',
                     help='train/test data range')
 parser.add_argument('--ext', type=str, default='sep',
                     help='dataset file extension')
